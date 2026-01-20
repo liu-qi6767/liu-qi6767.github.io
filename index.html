@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="referrer" content="no-referrer">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <title>我的专属音乐站 - 带歌词完整版</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🎧 我的专属音乐站</h1>
+            <p>支持歌词显示 | 微信原生播放 | 自动歌曲库</p>
+        </header>
+
+        <div class="type-filter">
+            <button class="filter-btn active" onclick="filterMusic('all')">全部歌曲</button>
+            <button class="filter-btn" onclick="filterMusic('原创音乐')">原创音乐</button>
+            <button class="filter-btn" onclick="filterMusic('流行音乐')">流行音乐</button>
+            <button class="filter-btn" onclick="filterMusic('轻音乐')">轻音乐</button>
+        </div>
+
+        <div class="music-library" id="musicLibrary"></div>
+
+        <div class="player-box">
+            <div id="lyricLayer" class="lyric-layer" style="display:none;">
+                <img id="lyricImg" src="" alt="歌词图片" class="lyric-img">
+                <div class="close-lyric" onclick="toggleLyric()">✖ 关闭歌词</div>
+            </div>
+            
+            <div class="player-controls">
+                <audio id="globalPlayer" controls="controls" preload="auto" loop="loop"></audio>
+                <button id="lyricBtn" class="lyric-btn" onclick="toggleLyric()" style="display:none;">📖 显示歌词</button>
+            </div>
+            <div class="player-info" id="playerInfo">请点击歌曲播放</div>
+        </div>
+    </div>
+
+    <!-- ✅ 修复核心：先调用JSON（已改为JS变量格式），再调用脚本，顺序不能反！ -->
+    <script src="js/musicdb.json"></script>
+    <script src="js/script.js"></script>
+    
+    <script>
+        var ua = navigator.userAgent.toLowerCase();
+        if(ua.match(/MicroMessenger/i) != "micromessenger"){
+            alert("✨ 建议在微信内打开，体验最佳歌词效果 ✨");
+        }
+    </script>
+</body>
+</html>

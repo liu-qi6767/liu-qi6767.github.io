@@ -1,0 +1,11 @@
+var musicDb = [
+  {
+    "id": 1768882477232,
+    "name": "越来越好",
+    "singer": "先锋",
+    "type": "原创音乐",
+    "src": "res/music/越来越好-先锋.mp3",
+    "cover": "default.jpg",
+    "lyric": "飞起来飞起来.jpg"
+  }
+]
