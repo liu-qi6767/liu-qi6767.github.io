@@ -73,7 +73,7 @@
             musicDb = JSON.parse(localStorage.getItem('musicDb'));
             renderMusicList();
         }
-        // 添加歌曲（修复封面/歌词路径：补充res/cover/和res/lyric/根路径）
+        // 添加歌曲（新增lyric字段）
         function addMusic(){
             const name = document.getElementById('musicName').value.trim();
             const singer = document.getElementById('singerName').value.trim();
@@ -81,20 +81,14 @@
             const file = document.getElementById('musicFile').files[0];
             if(!name || !singer || !file) {alert('请填写完整信息并选择MP3！');return;}
             
-            // 修复核心：封面和歌词补充完整相对路径
-            const coverFile = document.getElementById('coverFile').files[0];
-            const lyricFile = document.getElementById('lyricFile').files[0];
-            
             const musicItem = {
                 id: Date.now(),
                 name: name,
                 singer: singer,
                 type: type,
-                src: "res/music/" + file.name,  // 歌曲路径（已正确）
-                // 封面路径：补充res/cover/，默认封面也补全路径
-                cover: coverFile ? "res/cover/" + coverFile.name : "res/cover/default.jpg",
-                // 歌词路径：补充res/lyric/（关键修复点）
-                lyric: lyricFile ? "res/lyric/" + lyricFile.name : ''
+                src: "res/music/" + file.name,  // ✅ 新增res/music/路径
+                cover: document.getElementById('coverFile').files[0] ? document.getElementById('coverFile').files[0].name : 'default.jpg',
+                lyric: document.getElementById('lyricFile').files[0] ? document.getElementById('lyricFile').files[0].name : '' // 新增歌词文件名
             };
             musicDb.push(musicItem);
             localStorage.setItem('musicDb', JSON.stringify(musicDb));
@@ -104,7 +98,7 @@
             document.getElementById('musicName').value = '';
             document.getElementById('singerName').value = '';
             document.getElementById('musicFile').value = '';
-            document.getElementById('lyricFile').value = '';
+            document.getElementById('lyricFile').value = ''; // 清空歌词
             document.getElementById('coverFile').value = '';
         }
         function renderMusicList(){

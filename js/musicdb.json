@@ -1,11 +1,30 @@
-var musicDb = [
+var musicDb = 
+[
   {
-    "id": 1768882477232,
+    "id": 1768979720214,
     "name": "越来越好",
     "singer": "先锋",
     "type": "原创音乐",
     "src": "res/music/越来越好-先锋.mp3",
-    "cover": "default.jpg",
-    "lyric": "飞起来飞起来.jpg"
+    "cover": "res/cover/default.jpg",
+    "lyric": "res/lyric/越来越好.jpg"
+  },
+  {
+    "id": 1768981412373,
+    "name": "飞起来飞起来",
+    "singer": "先锋",
+    "type": "原创音乐",
+    "src": "res/music/飞起来飞起来-先锋.mp3",
+    "cover": "res/cover/default.jpg",
+    "lyric": "res/lyric/飞起来飞起来.jpg"
+  },
+  {
+    "id": 1768981494010,
+    "name": "圣哉全能主",
+    "singer": "--",
+    "type": "流行音乐",
+    "src": "res/music/圣哉全能主.mp3",
+    "cover": "res/cover/default.jpg",
+    "lyric": "res/lyric/圣哉全能主.jpg"
   }
 ]
