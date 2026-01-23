@@ -7,7 +7,7 @@ var musicDb =
      "type": "原创音乐",
      "src": "res/music/越来越好-先锋.mp3",
      "cover": "res/cover/default.jpg",
-     "lyric": "res/lyric/飞起来飞起来.jpg"
+     "lyric": "res/lyric/越来越好.jpg"
    },
    {
      "id": 1769130773628,
