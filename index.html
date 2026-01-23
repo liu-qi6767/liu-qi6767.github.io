@@ -2,12 +2,59 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!-- 1. 移除 user-scalable=no 允许页面缩放，保留基础视口设置 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="referrer" content="no-referrer">
     <meta name="format-detection" content="telephone=no,email=no">
     <title>先锋音乐</title>
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* 2. 添加歌词图片缩放样式 */
+        .lyric-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        .lyric-img {
+            max-width: 100%;
+            max-height: 80vh;
+            /* 允许图片被缩放 */
+            touch-action: manipulation;
+            /* 启用硬件加速，提升缩放流畅度 */
+            transform: translateZ(0);
+            /* 初始样式 */
+            transition: transform 0.2s ease;
+        }
+        
+        .close-lyric {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 15px;
+            border-radius: 50px;
+        }
+        
+        /* 适配移动端点击效果 */
+        .close-lyric:active {
+            background: rgba(0, 0, 0, 0.7);
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -42,5 +89,64 @@
     <script src="js/musicdb.json"></script>
     <script src="js/script.js"></script>
     
+    <!-- 3. 添加图片缩放交互脚本（如果需要更流畅的自定义缩放，可以添加这个） -->
+    <script>
+        // 简单的图片缩放增强（可选）
+        let scale = 1;
+        const lyricImg = document.getElementById('lyricImg');
+        
+        // 双指缩放事件监听
+        lyricImg.addEventListener('wheel', function(e) {
+            // 滚轮缩放（电脑端）
+            e.preventDefault();
+            scale += e.deltaY * -0.001;
+            scale = Math.min(Math.max(0.5, scale), 5);
+            this.style.transform = `scale(${scale})`;
+        });
+        
+        // 移动端触摸缩放（可选增强）
+        let touchStart = {};
+        lyricImg.addEventListener('touchstart', function(e) {
+            if (e.touches.length === 2) {
+                // 计算初始两点距离
+                touchStart.x = e.touches[0].clientX - e.touches[1].clientX;
+                touchStart.y = e.touches[0].clientY - e.touches[1].clientY;
+                touchStart.distance = Math.sqrt(touchStart.x * touchStart.x + touchStart.y * touchStart.y);
+                touchStart.scale = scale;
+            }
+        });
+        
+        lyricImg.addEventListener('touchmove', function(e) {
+            if (e.touches.length === 2) {
+                e.preventDefault();
+                // 计算当前两点距离
+                const x = e.touches[0].clientX - e.touches[1].clientX;
+                const y = e.touches[0].clientY - e.touches[1].clientY;
+                const distance = Math.sqrt(x * x + y * y);
+                // 计算缩放比例
+                scale = (distance / touchStart.distance) * touchStart.scale;
+                scale = Math.min(Math.max(0.5, scale), 5);
+                this.style.transform = `scale(${scale})`;
+            }
+        });
+        
+        // 关闭歌词时重置缩放
+        function resetLyricScale() {
+            scale = 1;
+            lyricImg.style.transform = 'scale(1)';
+        }
+        
+        // 修改toggleLyric函数，添加重置缩放
+        const originalToggleLyric = window.toggleLyric;
+        window.toggleLyric = function() {
+            const lyricLayer = document.getElementById('lyricLayer');
+            if (lyricLayer.style.display === 'none') {
+                // 打开歌词时重置缩放
+                resetLyricScale();
+            }
+            // 执行原来的toggleLyric函数
+            if (originalToggleLyric) originalToggleLyric();
+        };
+    </script>
 </body>
 </html>
