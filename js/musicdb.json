@@ -1,30 +1,122 @@
 var musicDb = 
 [
-  {
-    "id": 1768979720214,
-    "name": "越来越好",
-    "singer": "先锋",
-    "type": "原创音乐",
-    "src": "res/music/越来越好-先锋.mp3",
-    "cover": "res/cover/default.jpg",
-    "lyric": "res/lyric/越来越好.jpg"
-  },
-  {
-    "id": 1768981412373,
-    "name": "飞起来飞起来",
-    "singer": "先锋",
-    "type": "原创音乐",
-    "src": "res/music/飞起来飞起来-先锋.mp3",
-    "cover": "res/cover/default.jpg",
-    "lyric": "res/lyric/飞起来飞起来.jpg"
-  },
-  {
-    "id": 1768981494010,
-    "name": "圣哉全能主",
-    "singer": "--",
-    "type": "流行音乐",
-    "src": "res/music/圣哉全能主.mp3",
-    "cover": "res/cover/default.jpg",
-    "lyric": "res/lyric/圣哉全能主.jpg"
-  }
+   {
+     "id": 1768882477232,
+     "name": "越来越好",
+     "singer": "先锋",
+     "type": "原创音乐",
+     "src": "res/music/越来越好-先锋.mp3",
+     "cover": "default.jpg",
+     "lyric": "飞起来飞起来.jpg"
+   },
+   {
+     "id": 1769130773628,
+     "name": "大大欢喜",
+     "singer": "PC",
+     "type": "原创音乐",
+     "src": "res/music/大大欢喜.mp3",
+     "cover": "res/cover/default.jpg",
+     "lyric": "res/lyric/大大欢喜.jpg"
+   },
+   {
+     "id": 1769130831984,
+     "name": "哈该书2-8",
+     "singer": "PC",
+     "type": "原创音乐",
+     "src": "res/music/哈该书 2-8.mp3",
+     "cover": "res/cover/default.jpg",
+     "lyric": "res/lyric/哈该书2.8-9.jpg"
+   },
+   {
+     "id": 1769130870991,
+     "name": "欢乐的海洋",
+     "singer": "PC",
+     "type": "原创音乐",
+     "src": "res/music/欢乐的海洋.mp3",
+     "cover": "res/cover/default.jpg",
+     "lyric": "res/lyric/欢乐的海洋.png"
+   },
+   {
+     "id": 1769130922609,
+     "name": "进入幔内",
+     "singer": "PC",
+     "type": "原创音乐",
+     "src": "res/music/进入幔内2（PC 合唱）.mp3",
+     "cover": "res/cover/default.jpg",
+     "lyric": "res/lyric/进入幔内.jpg"
+   },
+   {
+     "id": 1769130969581,
+     "name": "撒迦利亚书2-10",
+     "singer": "PC",
+     "type": "原创音乐",
+     "src": "res/music/撒迦利亚书2-10.mp3",
+     "cover": "res/cover/default.jpg",
+     "lyric": "res/lyric/撒迦利亚书2-10.jpg"
+   },
+   {
+     "id": 1769131078543,
+     "name": "喜乐的油",
+     "singer": "PC",
+     "type": "原创音乐",
+     "src": "res/music/喜乐的油.mp3",
+     "cover": "res/cover/default.jpg",
+     "lyric": "res/lyric/喜乐的油.jpg"
+   },
+   {
+     "id": 1769131120198,
+     "name": "喜乐喜乐",
+     "singer": "PC",
+     "type": "原创音乐",
+     "src": "res/music/喜乐喜乐.mp3",
+     "cover": "res/cover/default.jpg",
+     "lyric": "res/lyric/喜乐喜乐.jpg"
+   },
+   {
+     "id": 1769131160697,
+     "name": "以赛亚35章5~6节",
+     "singer": "PC",
+     "type": "原创音乐",
+     "src": "res/music/以赛亚35章5～6节.mp3",
+     "cover": "res/cover/default.jpg",
+     "lyric": "res/lyric/以赛亚书35.5-6.jpg"
+   },
+   {
+     "id": 1769131195964,
+     "name": "以赛亚55章12~13节",
+     "singer": "PC",
+     "type": "原创音乐",
+     "src": "res/music/以赛亚55章12～13节.mp3",
+     "cover": "res/cover/default.jpg",
+     "lyric": "res/lyric/以赛亚书55.12-13.jpg"
+   },
+   {
+     "id": 1769131231874,
+     "name": "以赛亚61章3节",
+     "singer": "PC",
+     "type": "原创音乐",
+     "src": "res/music/以赛亚61章3节.mp3",
+     "cover": "res/cover/default.jpg",
+     "lyric": "res/lyric/以赛亚书61.3.jpg"
+   },
+   {
+     "id": 1769131273180,
+     "name": "以赛亚61章7节",
+     "singer": "PC",
+     "type": "原创音乐",
+     "src": "res/music/以赛亚61章7节.mp3",
+     "cover": "res/cover/default.jpg",
+     "lyric": "res/lyric/以赛亚书61.7.jpg"
+   },
+   {
+     "id": 1769131336657,
+     "name": "以色列啊耶稣爱你",
+     "singer": "PC",
+     "type": "原创音乐",
+     "src": "res/music/以色列啊耶稣爱你（PC 牧师领唱）.mp3",
+     "cover": "res/cover/default.jpg",
+     "lyric": "res/lyric/以色列啊耶稣爱你.jpg"
+   }
+ ]
+
 ]
