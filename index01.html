@@ -9,126 +9,77 @@
     <title>先锋音乐</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
-        /* 歌词层核心样式：居中铺满屏幕+支持缩放+点击关闭 */
+        /* ✅ 核心重构：歌词层+图片样式，实现全屏居中铺满（不变形） */
         .lyric-layer {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;  /* 视口宽度100% */
-            height: 100vh; /* 视口高度100% */
-            background: rgba(0, 0, 0, 0.95);
+            width: 100vw;  /* 占满屏幕宽度 */
+            height: 100vh; /* 占满屏幕高度 */
+            background: rgba(0, 0, 0, 0.95); /* 加深背景，更突出歌词 */
             z-index: 1000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 0; /* 去掉内边距，避免留白 */
-            box-sizing: border-box;
+            display: flex; /* 基础居中 */
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+            overflow: hidden; /* 隐藏图片超出屏幕的部分，避免滚动条 */
+            padding: 0; /* 清除原有内边距，避免空隙 */
+            margin: 0;
         }
         
         .lyric-img {
-            width: 100vw;  /* 铺满屏幕宽度 */
-            height: 100vh; /* 铺满屏幕高度 */
-            object-fit: contain; /* 保持图片比例，完整显示不拉伸 */
-            cursor: pointer; /* 提示点击可关闭 */
-            touch-action: manipulation; /* 支持触摸缩放 */
-            transform-origin: center; /* 缩放中心为图片中间 */
-            transition: transform 0.2s ease; /* 缩放过渡流畅 */
+            width: 100%;  /* 图片宽度占满容器 */
+            height: 100%; /* 图片高度占满容器 */
+            object-fit: cover; /* ✅ 关键属性：等比放大，裁剪多余部分，铺满且不变形 */
+            object-position: center center; /* ✅ 上下左右绝对居中，核心！ */
+            border: none;
+            outline: none;
         }
         
         .close-lyric {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 20px;
+            right: 20px;
             color: white;
-            font-size: 16px;
+            font-size: 18px;
             cursor: pointer;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 15px;
             border-radius: 50px;
-            z-index: 1001; /* 高于图片，避免被遮挡 */
+            z-index: 1001; /* 确保关闭按钮在图片上方，不被遮挡 */
         }
+        
         .close-lyric:active {
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
         }
 
-        /* 显示歌词按钮：缩小尺寸+独立一行（避免拥挤） */
+        /* 播放信息栏样式（保留之前的布局，无改动） */
+        .player-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            width: 100%;
+            gap: 8px;
+        }
         .lyric-btn {
-            width: 50px;  /* 缩小宽度 */
-            height: 28px; /* 缩小高度 */
-            font-size: 12px;/* 缩小字体 */
-            padding: 0;    /* 去掉内边距 */
+            display: none;
+            padding: 4px 8px;
+            font-size: 14px;
             border: none;
-            background: #2196F3;
-            color: white;
             border-radius: 4px;
+            background: #FF6700;
+            color: #fff;
             cursor: pointer;
-            margin: 5px auto 10px; /* 上下间距，居中显示 */
-            display: block; /* 块级元素，独立一行 */
+            white-space: nowrap;
         }
         .lyric-btn:active {
-            background: #1976D2;
-        }
-
-        /* 播放控制条：精简布局+适配手机 */
-        .player-controls {
-            width: 100%;
-            display: flex;
-            flex-direction: column; /* 歌词按钮上移，独立一行 */
-            align-items: center;
-            gap: 8px; /* 元素间距 */
-        }
-        /* 隐藏原生audio控件，用自定义控件替代（解决冗余功能问题） */
-        #globalPlayer {
-            display: none;
-        }
-        /* 自定义播放控制容器：播放/停止按钮 + 进度条 */
-        .custom-player {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 10px; /* 按钮和进度条间距 */
-        }
-        /* 播放/停止切换按钮 */
-        .play-stop-btn {
-            width: 60px;
-            height: 32px;
-            font-size: 14px;
-            border: none;
-            background: #FF6700;
-            color: white;
-            border-radius: 4px;
-            cursor: pointer;
-            flex-shrink: 0; /* 不压缩，固定宽度 */
-        }
-        .play-stop-btn:active {
             background: #e55a00;
         }
-        /* 精简进度条：适配手机，占满剩余空间 */
-        .progress-bar {
-            flex: 1; /* 占满剩余宽度 */
-            height: 6px;
-            -webkit-appearance: none;
-            appearance: none;
-            background: #eee;
-            border-radius: 3px;
-            outline: none;
-        }
-        .progress-bar::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #FF6700;
-            cursor: pointer;
-        }
-
-        /* 播放器信息区微调 */
-        .player-info {
-            text-align: center;
-            font-size: 14px;
-            color: #666;
-            margin-top: 10px;
+        .song-name-text {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     </style>
 </head>
@@ -148,159 +99,22 @@
         <div class="music-library" id="musicLibrary"></div>
 
         <div class="player-box">
-            <!-- 歌词层：居中铺满屏幕 -->
             <div id="lyricLayer" class="lyric-layer" style="display:none;">
-                <img id="lyricImg" src="" alt="歌词图片" class="lyric-img" onclick="toggleLyric()">
-                <div class="close-lyric" onclick="toggleLyric()">✖ 关闭</div>
+                <img id="lyricImg" src="" alt="歌词图片" class="lyric-img">
+                <div class="close-lyric" onclick="toggleLyric()">✖ 关闭歌词</div>
             </div>
             
-            <!-- 播放控制区：歌词按钮独立一行+精简控制条 -->
             <div class="player-controls">
-                <!-- 显示歌词按钮：缩小+独立一行 -->
-                <button id="lyricBtn" class="lyric-btn" onclick="toggleLyric()" style="display:none;">📖 歌词</button>
-                <!-- 原生audio（隐藏） -->
-                <audio id="globalPlayer" preload="auto" loop="loop"></audio>
-                <!-- 自定义精简控制条：播放/停止 + 进度条 -->
-                <div class="custom-player">
-                    <button class="play-stop-btn" id="playStopBtn" onclick="togglePlayStop()">播放</button>
-                    <input type="range" class="progress-bar" id="progressBar" min="0" max="100" value="0">
-                </div>
+                <audio id="globalPlayer" controls="controls" preload="auto" loop="loop"></audio>
             </div>
-            <div class="player-info" id="playerInfo">请点击歌曲播放</div>
+            <div class="player-info">
+                <span class="song-name-text" id="playerInfo">请点击歌曲播放</span>
+                <button id="lyricBtn" class="lyric-btn" onclick="toggleLyric()">📖 显示歌词</button>
+            </div>
         </div>
     </div>
 
-    <!-- 加载歌曲库和核心脚本 -->
     <script src="js/musicdb.json"></script>
     <script src="js/script.js"></script>
-
-    <!-- 新增：歌词缩放+自定义播放控制核心脚本 -->
-    <script>
-        // 全局变量：播放器、进度条、播放状态、缩放比例
-        const player = document.getElementById('globalPlayer');
-        const progressBar = document.getElementById('progressBar');
-        const playStopBtn = document.getElementById('playStopBtn');
-        const lyricImg = document.getElementById('lyricImg');
-        let isPlaying = false; // 播放状态：false-未播放，true-播放中
-        let lyricScale = 1;    // 歌词初始缩放比例
-        const scaleMin = 0.5;  // 最小缩放比例
-        const scaleMax = 3;    // 最大缩放比例
-
-        // 1. 歌词缩放功能：电脑滚轮+移动端双指缩放（居中缩放，支持铺满屏）
-        // 电脑端滚轮缩放
-        lyricImg.addEventListener('wheel', function(e) {
-            e.preventDefault();
-            // 计算缩放比例：滚轮向上放大，向下缩小
-            lyricScale += e.deltaY * -0.001;
-            // 限制缩放范围
-            lyricScale = Math.min(Math.max(scaleMin, lyricScale), scaleMax);
-            // 应用缩放
-            this.style.transform = `scale(${lyricScale})`;
-        });
-
-        // 移动端双指缩放
-        let touchStart = {};
-        lyricImg.addEventListener('touchstart', function(e) {
-            if (e.touches.length === 2) {
-                // 记录初始双指位置和距离
-                const x1 = e.touches[0].clientX, y1 = e.touches[0].clientY;
-                const x2 = e.touches[1].clientX, y2 = e.touches[1].clientY;
-                touchStart.distance = Math.hypot(x1 - x2, y1 - y2);
-                touchStart.currentScale = lyricScale;
-            }
-        });
-        lyricImg.addEventListener('touchmove', function(e) {
-            if (e.touches.length === 2) {
-                e.preventDefault();
-                // 计算当前双指距离
-                const x1 = e.touches[0].clientX, y1 = e.touches[0].clientY;
-                const x2 = e.touches[1].clientX, y2 = e.touches[1].clientY;
-                const currentDistance = Math.hypot(x1 - x2, y1 - y2);
-                // 计算新的缩放比例
-                lyricScale = (currentDistance / touchStart.distance) * touchStart.currentScale;
-                // 限制缩放范围
-                lyricScale = Math.min(Math.max(scaleMin, lyricScale), scaleMax);
-                // 应用缩放
-                lyricImg.style.transform = `scale(${lyricScale})`;
-            }
-        });
-
-        // 2. 播放/停止切换功能：一个按钮切换，同步状态
-        function togglePlayStop() {
-            if (!player.src) { // 未选择歌曲时提示
-                alert('请先点击歌曲列表选择歌曲！');
-                return;
-            }
-            if (isPlaying) {
-                // 播放中 → 停止：暂停播放，重置进度，按钮显示“播放”
-                player.pause();
-                player.currentTime = 0;
-                playStopBtn.innerText = '播放';
-                isPlaying = false;
-            } else {
-                // 未播放 → 播放：开始播放，按钮显示“停止”
-                player.play();
-                playStopBtn.innerText = '停止';
-                isPlaying = true;
-            }
-        }
-
-        // 3. 进度条实时更新+点击调整进度
-        // 播放时实时更新进度条
-        player.addEventListener('timeupdate', function() {
-            if (player.duration) {
-                // 计算播放进度（百分比）
-                const progress = (player.currentTime / player.duration) * 100;
-                progressBar.value = progress;
-            }
-        });
-        // 点击进度条调整播放位置
-        progressBar.addEventListener('input', function() {
-            if (player.duration) {
-                // 根据进度条值设置播放时间
-                const seekTime = (this.value / 100) * player.duration;
-                player.currentTime = seekTime;
-            }
-        });
-
-        // 4. 歌曲播放状态同步：外部点击歌曲播放时更新按钮和状态
-        // 重写播放函数（适配原有script.js的播放逻辑）
-        window.playMusic = function(src, name, singer) {
-            // 设置歌曲地址
-            player.src = src;
-            // 开始播放
-            player.play();
-            // 更新状态和按钮
-            isPlaying = true;
-            playStopBtn.innerText = '停止';
-            // 更新播放信息
-            document.getElementById('playerInfo').innerText = `${name} - ${singer}`;
-            // 原有歌词按钮显示逻辑不变
-            const lyricBtn = document.getElementById('lyricBtn');
-            const currentMusic = musicDb.find(item => item.src === src);
-            lyricBtn.style.display = currentMusic && currentMusic.lyric ? 'block' : 'none';
-        };
-
-        // 5. 歌词显示/隐藏：重置缩放比例
-        window.toggleLyric = function() {
-            const lyricLayer = document.getElementById('lyricLayer');
-            if (lyricLayer.style.display === 'none') {
-                // 打开歌词：重置缩放比例，显示图层
-                lyricScale = 1;
-                lyricImg.style.transform = `scale(${lyricScale})`;
-                lyricLayer.style.display = 'flex';
-            } else {
-                // 关闭歌词：隐藏图层
-                lyricLayer.style.display = 'none';
-            }
-        };
-
-        // 6. 播放器结束事件：播放完成后重置状态
-        player.addEventListener('ended', function() {
-            isPlaying = false;
-            playStopBtn.innerText = '播放';
-            progressBar.value = 0;
-        });
-    </script>
 </body>
 </html>
